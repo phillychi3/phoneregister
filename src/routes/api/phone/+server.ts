@@ -20,10 +20,18 @@ export const GET: RequestHandler = async () => {
 			headers: { 'Content-Type': 'application/json' }
 		});
 	} catch (error) {
-		return new Response(JSON.stringify({ error: error.message }), {
-			status: 500,
-			headers: { 'Content-Type': 'application/json' }
-		});
+		if (error instanceof Error) {
+			return new Response(JSON.stringify({ error: error.message }), {
+				status: 500,
+				headers: { 'Content-Type': 'application/json' }
+			});
+		} else {
+			console.error(error);
+			return new Response(JSON.stringify({ error: 'An unknown error occurred' }), {
+				status: 500,
+				headers: { 'Content-Type': 'application/json' }
+			});
+		}
 	}
 };
 
@@ -39,15 +47,17 @@ export const POST: RequestHandler = async ({ request }) => {
 			headers: { 'Content-Type': 'application/json' }
 		});
 	} catch (error) {
-		return new Response(
-			JSON.stringify({
-				success: false,
-				error: error.message
-			}),
-			{
-				status: 400,
+		if (error instanceof Error) {
+			return new Response(JSON.stringify({ error: error.message }), {
+				status: 500,
 				headers: { 'Content-Type': 'application/json' }
-			}
-		);
+			});
+		} else {
+			console.error(error);
+			return new Response(JSON.stringify({ error: 'An unknown error occurred' }), {
+				status: 500,
+				headers: { 'Content-Type': 'application/json' }
+			});
+		}
 	}
 };
