@@ -35,6 +35,29 @@
 		const phoneRegex = /^09\d{8}$/;
 		if (!phoneRegex.test(phoneNumber)) {
 			message = '請輸入有效的手機號碼';
+			for (let i = 0; i < 20; i++) {
+				const question = document.createElement('img');
+				question.src =
+					'https://memeprod.sgp1.digitaloceanspaces.com/user-resource/4a42599768db38247148417f3d0702b2.png';
+				question.style.position = 'fixed';
+				question.style.width = '100px';
+				question.style.height = '100px';
+				question.style.zIndex = '1000';
+				question.style.left = '50%';
+				question.style.top = '50%';
+				question.style.transform = 'translate(-50%, -50%)';
+				document.body.appendChild(question);
+				gsap.to(question, {
+					y: `-=${150 + Math.random() * 69}`,
+					x: `+=${(Math.random() - 0.5) * 150}`,
+					scale: 0.8,
+					opacity: 0,
+					duration: 2.1,
+					ease: 'power2.out',
+					onComplete: () => question.remove()
+				});
+			}
+			phoneNumber = '';
 			return;
 		}
 
@@ -196,43 +219,44 @@
 </script>
 
 <div class="fixed-container">
-	<div bind:this={pageWrapper} class="mx-auto mt-10 max-w-md rounded-lg bg-white p-6 shadow-lg">
+	<div class="mx-auto mt-10 max-w-md rounded-lg bg-white p-6 shadow-lg">
 		<h1 class="mb-6 text-2xl font-bold">手機號碼登記系統</h1>
-
-		<div class="mb-6">
-			<h2 class="mb-2 text-lg font-semibold">新增號碼</h2>
-			<div class="flex gap-2">
-				<input
-					type="tel"
-					bind:value={phoneNumber}
-					placeholder="請輸入手機號碼"
-					class="flex-1 rounded border px-3 py-2"
-					on:keydown={(e) => e.key === 'Enter' && savePhone()}
-				/>
-				<button
-					on:click={savePhone}
-					class="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-				>
-					儲存
-				</button>
+		<div bind:this={pageWrapper}>
+			<div class="mb-6">
+				<h2 class="mb-2 text-lg font-semibold">新增號碼</h2>
+				<div class="flex gap-2">
+					<input
+						type="tel"
+						bind:value={phoneNumber}
+						placeholder="請輸入手機號碼"
+						class="flex-1 rounded border px-3 py-2"
+						on:keydown={(e) => e.key === 'Enter' && savePhone()}
+					/>
+					<button
+						on:click={savePhone}
+						class="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+					>
+						儲存
+					</button>
+				</div>
 			</div>
-		</div>
 
-		<div class="mb-6">
-			<h2 class="mb-2 text-lg font-semibold">查詢號碼</h2>
-			<div class="flex gap-2">
-				<input
-					type="tel"
-					bind:value={searchNumber}
-					placeholder="請輸入手機號碼"
-					class="flex-1 rounded border px-3 py-2"
-				/>
-				<button
-					on:click={searchPhone}
-					class="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
-				>
-					查詢
-				</button>
+			<div class="mb-6">
+				<h2 class="mb-2 text-lg font-semibold">查詢號碼</h2>
+				<div class="flex gap-2">
+					<input
+						type="tel"
+						bind:value={searchNumber}
+						placeholder="請輸入手機號碼"
+						class="flex-1 rounded border px-3 py-2"
+					/>
+					<button
+						on:click={searchPhone}
+						class="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
+					>
+						查詢
+					</button>
+				</div>
 			</div>
 		</div>
 		{#if message}
