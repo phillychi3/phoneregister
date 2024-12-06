@@ -49,6 +49,11 @@
 		if (res.ok) {
 			message = '號碼已儲存';
 			phoneNumber = '';
+			confetti({
+				particleCount: 200,
+				spread: 200,
+				origin: { y: 0.6 }
+			});
 
 			loadPhones();
 		} else {
@@ -190,70 +195,79 @@
 	}
 </script>
 
-<div bind:this={pageWrapper} class="mx-auto mt-10 max-w-md rounded-lg bg-white p-6 shadow-lg">
-	<h1 class="mb-6 text-2xl font-bold">手機號碼登記系統</h1>
+<div class="fixed-container">
+	<div bind:this={pageWrapper} class="mx-auto mt-10 max-w-md rounded-lg bg-white p-6 shadow-lg">
+		<h1 class="mb-6 text-2xl font-bold">手機號碼登記系統</h1>
 
-	<div class="mb-6">
-		<h2 class="mb-2 text-lg font-semibold">新增號碼</h2>
-		<div class="flex gap-2">
-			<input
-				type="tel"
-				bind:value={phoneNumber}
-				placeholder="請輸入手機號碼"
-				class="flex-1 rounded border px-3 py-2"
-			/>
-			<button
-				on:click={savePhone}
-				class="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-			>
-				儲存
-			</button>
-		</div>
-	</div>
-
-	<div class="mb-6">
-		<h2 class="mb-2 text-lg font-semibold">查詢號碼</h2>
-		<div class="flex gap-2">
-			<input
-				type="tel"
-				bind:value={searchNumber}
-				placeholder="請輸入手機號碼"
-				class="flex-1 rounded border px-3 py-2"
-			/>
-			<button
-				on:click={searchPhone}
-				class="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
-			>
-				查詢
-			</button>
-		</div>
-	</div>
-	{#if message}
-		<div bind:this={messageRef} class="mt-4 rounded p-3 text-center text-2xl font-bold">
-			{message}
-		</div>
-	{/if}
-	{#if phoneList.length > 0}
 		<div class="mb-6">
-			<h2 class="mb-2 text-lg font-semibold">已儲存號碼</h2>
-			<ul class="divide-y divide-gray-200">
-				{#each phoneList as phone}
-					<li class="flex items-center justify-between py-2">
-						<span>{phone}</span>
-						<button
-							on:click={() => deletePhone(phone)}
-							class="rounded bg-red-500 px-2 py-1 text-sm text-white hover:bg-red-600"
-						>
-							刪除
-						</button>
-					</li>
-				{/each}
-			</ul>
+			<h2 class="mb-2 text-lg font-semibold">新增號碼</h2>
+			<div class="flex gap-2">
+				<input
+					type="tel"
+					bind:value={phoneNumber}
+					placeholder="請輸入手機號碼"
+					class="flex-1 rounded border px-3 py-2"
+					on:keydown={(e) => e.key === 'Enter' && savePhone()}
+				/>
+				<button
+					on:click={savePhone}
+					class="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+				>
+					儲存
+				</button>
+			</div>
 		</div>
-	{/if}
+
+		<div class="mb-6">
+			<h2 class="mb-2 text-lg font-semibold">查詢號碼</h2>
+			<div class="flex gap-2">
+				<input
+					type="tel"
+					bind:value={searchNumber}
+					placeholder="請輸入手機號碼"
+					class="flex-1 rounded border px-3 py-2"
+				/>
+				<button
+					on:click={searchPhone}
+					class="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
+				>
+					查詢
+				</button>
+			</div>
+		</div>
+		{#if message}
+			<div bind:this={messageRef} class="mt-4 rounded p-3 text-center text-2xl font-bold">
+				{message}
+			</div>
+		{/if}
+		{#if phoneList.length > 0}
+			<div class="mb-6">
+				<h2 class="mb-2 text-lg font-semibold">已儲存號碼</h2>
+				<ul class="divide-y divide-gray-200">
+					{#each phoneList as phone}
+						<li class="flex items-center justify-between py-2">
+							<span>{phone}</span>
+							<button
+								on:click={() => deletePhone(phone)}
+								class="rounded bg-red-500 px-2 py-1 text-sm text-white hover:bg-red-600"
+							>
+								刪除
+							</button>
+						</li>
+					{/each}
+				</ul>
+			</div>
+		{/if}
+	</div>
 </div>
 
 <style>
+	.fixed-container {
+		height: 100vh;
+		width: 100%;
+		overflow-y: auto;
+		position: relative;
+	}
 	:global(.rainbow-text) {
 		background-image: linear-gradient(45deg, #ff0000, #ff8000, #ffff00, #00ff00, #0000ff, #8000ff);
 		background-size: 600% 100%;
