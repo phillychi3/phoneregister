@@ -10,6 +10,9 @@
 	let messageRef: HTMLDivElement;
 	let pageWrapper: HTMLDivElement;
 
+	let showKeypad = false;
+	let activeInput: 'add' | 'search' | null = 'add';
+
 	const gifs = [
 		'https://cdn.discordapp.com/emojis/1148841433252511764.webp?size=96&animated=true',
 		'https://cdn.discordapp.com/emojis/1022531120476209272.webp?size=96&animated=true',
@@ -18,6 +21,22 @@
 		'https://cdn.discordapp.com/emojis/1155147356891795456.webp?size=96&animated=true',
 		'https://cdn.discordapp.com/emojis/1292512035350773880.webp?size=96&animated=true'
 	];
+
+	function handleKeypadInput(num: string) {
+		if (activeInput === 'add') {
+			phoneNumber = (phoneNumber + num).slice(0, 10);
+		} else if (activeInput === 'search') {
+			searchNumber = (searchNumber + num).slice(0, 10);
+		}
+	}
+
+	function handleBackspace() {
+		if (activeInput === 'add') {
+			phoneNumber = phoneNumber.slice(0, -1);
+		} else if (activeInput === 'search') {
+			searchNumber = searchNumber.slice(0, -1);
+		}
+	}
 
 	async function loadPhones() {
 		const res = await fetch('/api/phone');
@@ -218,7 +237,7 @@
 	}
 </script>
 
-<div class="fixed-container">
+<div class="h-screen w-[100vh%] overflow-y-auto p-4">
 	<div class="mx-auto mt-10 max-w-md rounded-lg bg-white p-6 shadow-lg">
 		<h1 class="mb-6 text-2xl font-bold">手機號碼登記系統</h1>
 		<div bind:this={pageWrapper}>
@@ -231,6 +250,7 @@
 						placeholder="請輸入手機號碼"
 						class="flex-1 rounded border px-3 py-2"
 						on:keydown={(e) => e.key === 'Enter' && savePhone()}
+						on:focus={() => (activeInput = 'add')}
 					/>
 					<button
 						on:click={savePhone}
@@ -249,6 +269,7 @@
 						bind:value={searchNumber}
 						placeholder="請輸入手機號碼"
 						class="flex-1 rounded border px-3 py-2"
+						on:keydown={(e) => e.key === 'Enter' && searchPhone()}
 					/>
 					<button
 						on:click={searchPhone}
@@ -285,13 +306,32 @@
 	</div>
 </div>
 
+<div class="fixed right-4 top-1/2 z-50 -translate-y-1/2 rounded-lg bg-white p-4 shadow-lg">
+	<div class="grid grid-cols-3 gap-6">
+		{#each Array(9) as _, i}
+			<button
+				on:click={() => handleKeypadInput((i + 1).toString())}
+				class="h-24 w-24 rounded-lg bg-gray-100 text-xl font-bold hover:bg-gray-200"
+			>
+				{i + 1}
+			</button>
+		{/each}
+		<button
+			on:click={() => handleKeypadInput('0')}
+			class="col-start-2 h-24 w-24 rounded-lg bg-gray-100 text-xl font-bold hover:bg-gray-200"
+		>
+			0
+		</button>
+		<button
+			on:click={handleBackspace}
+			class="col-start-3 h-24 w-24 rounded-lg bg-red-100 text-xl font-bold hover:bg-red-200"
+		>
+			←
+		</button>
+	</div>
+</div>
+
 <style>
-	.fixed-container {
-		height: 100vh;
-		width: 100%;
-		overflow-y: auto;
-		position: relative;
-	}
 	:global(.rainbow-text) {
 		background-image: linear-gradient(45deg, #ff0000, #ff8000, #ffff00, #00ff00, #0000ff, #8000ff);
 		background-size: 600% 100%;
