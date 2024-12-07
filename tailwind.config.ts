@@ -7,5 +7,8 @@ export default {
 		extend: {}
 	},
 
-	plugins: []
+	plugins: [],
+	corePlugins: {
+		touchAction: true,
+	},
 } satisfies Config;

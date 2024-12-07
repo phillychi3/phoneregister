@@ -3,4 +3,6 @@
 	let { children } = $props();
 </script>
 
-{@render children()}
+<div class="touch-manipulation">
+	{@render children()}
+</div>
