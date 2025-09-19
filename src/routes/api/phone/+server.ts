@@ -1,20 +1,10 @@
 import type { RequestHandler } from './$types';
-import Database from 'better-sqlite3';
-
-const db = new Database('phones.db');
-
-// 建立資料表
-db.exec(`
-  CREATE TABLE IF NOT EXISTS phones (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    number TEXT UNIQUE NOT NULL
-  )
-`);
+import db from '$lib/database.js';
 
 export const GET: RequestHandler = async () => {
 	try {
 		const stmt = db.prepare('SELECT number FROM phones ORDER BY number ASC');
-		const phones = stmt.all().map((row) => row.number);
+		const phones = stmt.all().map((row: any) => row.number);
 
 		return new Response(JSON.stringify({ phones }), {
 			headers: { 'Content-Type': 'application/json' }
