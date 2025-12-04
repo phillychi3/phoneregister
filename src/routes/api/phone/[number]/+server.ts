@@ -5,12 +5,21 @@ export const GET: RequestHandler = async ({ params }) => {
 	const { number } = params;
 
 	try {
-		const stmt = db.prepare('SELECT COUNT(*) as count FROM phones WHERE number = ?');
-		const result = stmt.get(number) as { count: number };
+		let count: number;
+
+		if (number.length === 3) {
+			const stmt = db.prepare('SELECT COUNT(*) as count FROM phones WHERE substr(number, -3) = ?');
+			const result = stmt.get(number) as { count: number };
+			count = result.count;
+		} else {
+			const stmt = db.prepare('SELECT COUNT(*) as count FROM phones WHERE number = ?');
+			const result = stmt.get(number) as { count: number };
+			count = result.count;
+		}
 
 		return new Response(
 			JSON.stringify({
-				exists: result.count > 0
+				exists: count > 0
 			}),
 			{
 				headers: { 'Content-Type': 'application/json' }

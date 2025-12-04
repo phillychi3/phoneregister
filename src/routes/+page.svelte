@@ -319,7 +319,7 @@
 
 		<button
 			on:pointerdown={handleBackspace}
-			class="col-start-3 h-24 w-24 touch-manipulation rounded-lg bg-red-200 text-xl font-bold hover:bg-red-300"
+			class="col-start-1 h-24 w-24 touch-manipulation rounded-lg bg-red-200 text-xl font-bold hover:bg-red-300"
 		>
 			刪除
 		</button>
@@ -331,7 +331,7 @@
 		</button>
 		<button
 			on:pointerdown={savePhone}
-			class="col-start-1 h-24 w-24 touch-manipulation rounded-lg bg-green-200 text-xl font-bold hover:bg-green-300"
+			class="col-start-3 h-24 w-24 touch-manipulation rounded-lg bg-green-200 text-xl font-bold hover:bg-green-300"
 		>
 			儲存
 		</button>
