@@ -310,19 +310,19 @@
 	<div class="grid grid-cols-3 gap-6">
 		{#each Array(9) as _, i}
 			<button
-				on:touchstart={() => handleKeypadInput((i + 1).toString())}
+				on:pointerdown={() => handleKeypadInput((i + 1).toString())}
 				class="h-24 w-24 rounded-lg bg-cyan-200 text-xl font-bold hover:bg-gray-200"
 			>
 				{i + 1}
 			</button>
 		{/each}
-		<button
-			on:pointerdown={savePhone}
-			class="col-start-1 h-24 w-24 touch-manipulation rounded-lg bg-green-200 text-xl font-bold hover:bg-green-300"
-		>
-			儲存
-		</button>
 
+		<button
+			on:pointerdown={handleBackspace}
+			class="col-start-3 h-24 w-24 touch-manipulation rounded-lg bg-red-200 text-xl font-bold hover:bg-red-300"
+		>
+			刪除
+		</button>
 		<button
 			on:pointerdown={() => handleKeypadInput('0')}
 			class="col-start-2 h-24 w-24 touch-manipulation rounded-lg bg-cyan-200 text-xl font-bold hover:bg-cyan-300"
@@ -330,10 +330,10 @@
 			0
 		</button>
 		<button
-			on:pointerdown={handleBackspace}
-			class="col-start-3 h-24 w-24 touch-manipulation rounded-lg bg-red-200 text-xl font-bold hover:bg-red-300"
+			on:pointerdown={savePhone}
+			class="col-start-1 h-24 w-24 touch-manipulation rounded-lg bg-green-200 text-xl font-bold hover:bg-green-300"
 		>
-			刪除
+			儲存
 		</button>
 	</div>
 </div>
