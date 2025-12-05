@@ -286,6 +286,9 @@
 			</div>
 		{/if}
 		{#if phoneList.length > 0}
+			<div class="text-lg">
+				<p>計數:<span class=" text-red-600">{phoneList.length}</span> </p>
+			</div>
 			<div class="mb-6">
 				<h2 class="mb-2 text-lg font-semibold">已儲存號碼</h2>
 				<ul class="divide-y divide-gray-200">
