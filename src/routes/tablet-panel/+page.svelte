@@ -14,6 +14,16 @@
 		phoneNumber = phoneNumber.slice(0, -1);
 	}
 
+	function toggleFullScreen() {
+		if (!document.fullscreenElement) {
+			document.documentElement.requestFullscreen();
+		} else {
+			if (document.exitFullscreen) {
+				document.exitFullscreen();
+			}
+		}
+	}
+
 	async function savePhone() {
 		const phoneRegex = /^09\d{8}$/;
 		if (!phoneRegex.test(phoneNumber)) {
@@ -95,8 +105,29 @@
 
 <div class="flex h-screen w-full flex-col bg-gray-50 p-4" bind:this={pageWrapper}>
 	<div class="flex h-full w-full flex-col gap-4">
-		<div class="text-center">
+		<div class="relative flex items-center justify-center">
 			<h1 class="text-3xl font-bold text-gray-800">手機號碼登記</h1>
+			<button
+				onclick={toggleFullScreen}
+				class="absolute right-0 rounded-lg p-2 text-gray-600 hover:bg-gray-200"
+				aria-label="全螢幕"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<path
+						d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"
+					/>
+				</svg>
+			</button>
 		</div>
 
 		<div class="relative">
